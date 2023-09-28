@@ -6,42 +6,49 @@ and parameters of this model, and report the math
 
 import numpy as np 
 import matplotlib.pyplot as plt 
+ 
+def sampling_motion_model(control_command, x_prev, delta_t): 
 
-# read in odometry data (times, fwd velocities (m/s), angular velocities (m/s))
+    a = [.0000001, .0000001, .0000001, .000001, .000001, .0000001] #alphas
 
-# motion model: state transition model in mobile robotics
-# p(x_t | u_t, x_{t-1})
+    v, w = control_command[0], control_command[1]
 
-# velocity motion model: control a robot through translational (v_t) and angular velocities (w_t). u_t = [v_t, w_t]
-# w_t: ccw + , cw - w 
-
-
-# p = motion_model_vel(x_new, u_t, x) 
-# return the probability of arriving at x_t given x_prev and control input 
-
-
-def motion_model_vel(x_t, u_t, x_prev, delta_t): 
-
-    #inputs
-    v_t, w_t = u_t 
-    x, y,theta = x_prev 
-    x_p, y_p, theta_p = x_t 
+    if v ==0 and w==0: 
+        return x_prev 
     
-    #circle parameters
-    mu = .5 * ((x-x_p)*np.cos(theta) + (y-y_p)*np.sin(theta)) / ((y-y_p)*np.cos(theta) - (x-x_p)*np.sin(theta)) 
-    x_star = .5 * (x+x_p) + mu(y-y_p) 
-    y_star = .5 * (y+y_p) + mu(x_p-x) 
-    r_star = np.sqrt( (x-x_star)**2 + (y-y_star)**2 ) 
-    delta_theta = np.atan2(y_p-y_star, x_p-x_star) - np.atan2(y-y_star, x-x_star) 
-     
-    #actual velocities 
-    v_hat = delta_theta / delta_t 
-    w_hat = delta_theta / delta_t 
-    gamma_hat = ((theta_p - theta) / delta_t) - w_hat 
+    x, y, theta = x_prev #start with 0 0 0, estimate 1st, and propagate forward 
+    v_hat = v + sample_normal_distribution(a[0]*v**2 + a[1]*w**2) 
+    w_hat = w + sample_normal_distribution(a[2]*v**2 + a[3]*w**2) 
+    gamma_hat = sample_normal_distribution(a[4]*v**2 + a[5]*w**2)
 
-
+    x_new = x - (v_hat/w_hat)*np.sin(theta) + (v_hat/w_hat)*np.sin(theta + (w_hat * delta_t) )
+    y_new = y + (v_hat/w_hat)*np.cos(theta) - (v_hat/w_hat)*np.cos(theta + (w_hat * delta_t) )
     
+    theta_new = theta + w_hat*delta_t + gamma_hat*delta_t 
 
-def prob_normal_distribution(a,b): 
+    return x_new, y_new, theta_new 
 
-    return (1 / np.sqrt(2*np.pi*b)) * np.exp(-.5 * a**2 / b ) 
+
+def sample_normal_distribution(b):
+    # generate an array of 12 random values sampled from a uniform distribution
+    random_values = np.random.uniform(-b, b, 12)
+    
+    return 0.5 * np.sum(random_values)
+
+
+
+# def motion_model_simple(control_command, x_prev, delta_t): 
+
+#     x_0, y_0, v_i, w_i, t_i = x_prev 
+#     v_f, w_f, t_f = control_command #setting desired velocities and timestamp 
+
+#     delta_d = .5*(v_i + v_f) * delta_t 
+#     delta_theta = .5*(w_i + w_f) * delta_t 
+
+#     robot_x = x_0 + delta_d*np.cos(delta_theta) 
+#     robot_y = y_0 + delta_d*np.sin(delta_theta) 
+
+#     return robot_x,robot_y,delta_theta 
+
+
+
