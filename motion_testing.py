@@ -21,12 +21,14 @@ def test_sequence():
     y_positions = []
 
     commands = [
+        (0.0, 0.0, 0.0),
         (0.5, 0.0, 1.0),
-        (0.0, -1/2*np.pi, 2.0),
+        (0.0, -1/(2*np.pi), 2.0),
         (0.5, 0.0, 3.0),
-        (0.0, 1/2*np.pi, 4.0),
+        (0.0, 1/(2*np.pi), 4.0),
         (0.5, 0.0, 5.0)
     ]
+
     for i in range(len(commands)):
         command = commands[i]
 
@@ -42,7 +44,6 @@ def test_sequence():
         x, y, theta = sampling_motion_model(command, x_prev, delta_t)
         x_positions.append(x)
         y_positions.append(y)
-
         x_prev = (x, y, theta)
 
     # Plot the trajectory
@@ -58,16 +59,17 @@ def main():
     # test_sequence()
 
     # Define file paths
-    command_file = 'datasets/ds1/ds1_Odometry.dat'
-    ground_truth_file = 'datasets/ds1/ds1_Groundtruth.dat'
+    command_file = 'datasets/ds0/ds0_Odometry.dat'
+    ground_truth_file = 'datasets/ds0/ds0_Groundtruth.dat'
 
     commands = read_dat_file(command_file)  # Array columns: time, fwd vel, angular vel
     ground_truth_data = read_dat_file(ground_truth_file)  # Array columns: time, x, y, heading
 
-    ground_truth_x = ground_truth_data[:, 1]
-    ground_truth_y = ground_truth_data[:, 2]
+    ground_truth_x = ground_truth_data[0:, 1] #all rows col 1
+    ground_truth_y = ground_truth_data[0:, 2]
+    ground_truth_thetas = ground_truth_data[0:,3]
 
-    x_prev = (ground_truth_x[0], ground_truth_y[0], 0.0)
+    x_prev = (ground_truth_x[0], ground_truth_y[0], ground_truth_thetas[0])
     x_positions = []
     y_positions = []
 
@@ -75,22 +77,21 @@ def main():
         delta_t = commands[i][0] - commands[i-1][0] 
        
         v, w = commands[i][1], commands[i][2]
-
         x, y, theta = sampling_motion_model((v, w), x_prev, delta_t)
 
         x_positions.append(x)
+  
         y_positions.append(y)
 
         x_prev = (x, y, theta)  
 
-    plt.plot(ground_truth_x, ground_truth_y, label='Ground Truth Trajectory', marker='x', linewidth = 0.05,linestyle='-')
-    plt.plot(x_positions, y_positions, label='Motion Model Trajectory', marker='o', linewidth = 0.05, linestyle='-')
+    plt.plot(ground_truth_x, ground_truth_y,label='Ground Truth Trajectory') 
+    plt.plot(x_positions, y_positions,label='Motion Model Trajectory')
 
     plt.xlabel('X Position (m)')
     plt.ylabel('Y Position (m)')
     plt.title('Trajectory Comparison: Motion Model vs Ground Truth')
     plt.legend()
-    plt.grid(True)
     plt.show()
 
 

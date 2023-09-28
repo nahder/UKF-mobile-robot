@@ -26,6 +26,7 @@ def sampling_motion_model(control_command, x_prev, delta_t):
     
     theta_new = theta + w_hat*delta_t + gamma_hat*delta_t 
 
+
     return x_new, y_new, theta_new 
 
 
@@ -43,6 +44,7 @@ def sample_normal_distribution(b):
 #     v_f, w_f, t_f = control_command #setting desired velocities and timestamp 
 
 #     delta_d = .5*(v_i + v_f) * delta_t 
+
 #     delta_theta = .5*(w_i + w_f) * delta_t 
 
 #     robot_x = x_0 + delta_d*np.cos(delta_theta) 
