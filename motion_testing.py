@@ -57,13 +57,11 @@ def test_sequence():
 
 def main(): 
     # test_sequence()
+    command_file = 'datasets/ds1/ds1_Odometry.dat'
+    ground_truth_file = 'datasets/ds1/ds1_Groundtruth.dat'
 
-    # Define file paths
-    command_file = 'datasets/ds0/ds0_Odometry.dat'
-    ground_truth_file = 'datasets/ds0/ds0_Groundtruth.dat'
-
-    commands = read_dat_file(command_file)  # Array columns: time, fwd vel, angular vel
-    ground_truth_data = read_dat_file(ground_truth_file)  # Array columns: time, x, y, heading
+    commands = read_dat_file(command_file)  # array columns: time, fwd vel, angular vel
+    ground_truth_data = read_dat_file(ground_truth_file)  # array columns: time, x, y, heading
 
     ground_truth_x = ground_truth_data[0:, 1] #all rows col 1
     ground_truth_y = ground_truth_data[0:, 2]

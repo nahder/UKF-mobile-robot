@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
  
 def sampling_motion_model(control_command, x_prev, delta_t): 
 
-    a = [.0000001, .0000001, .0000001, .000001, .000001, .0000001] #alphas
+    a = [.0000000001, .0000000001, .0000000001, .000000001, .000000001, .0000000001] #alphas
 
     v, w = control_command[0], control_command[1]
 
@@ -20,6 +20,8 @@ def sampling_motion_model(control_command, x_prev, delta_t):
     v_hat = v + sample_normal_distribution(a[0]*v**2 + a[1]*w**2) 
     w_hat = w + sample_normal_distribution(a[2]*v**2 + a[3]*w**2) 
     gamma_hat = sample_normal_distribution(a[4]*v**2 + a[5]*w**2)
+
+ 
 
     x_new = x - (v_hat/w_hat)*np.sin(theta) + (v_hat/w_hat)*np.sin(theta + (w_hat * delta_t) )
     y_new = y + (v_hat/w_hat)*np.cos(theta) - (v_hat/w_hat)*np.cos(theta + (w_hat * delta_t) )
@@ -35,6 +37,8 @@ def sample_normal_distribution(b):
     random_values = np.random.uniform(-b, b, 12)
     
     return 0.5 * np.sum(random_values)
+
+    # return 0
 
 
 
