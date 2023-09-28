@@ -88,6 +88,8 @@ def main():
 
     plt.xlabel('X Position (m)')
     plt.ylabel('Y Position (m)')
+    plt.gca().set_aspect('equal')
+
     plt.title('Trajectory Comparison: Motion Model vs Ground Truth')
     plt.legend()
     plt.show()
