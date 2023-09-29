@@ -55,8 +55,7 @@ def test_sequence():
     plt.grid(True)
     plt.show()
 
-def main(): 
-    # test_sequence()
+def compare_ground_truth():
     command_file = 'datasets/ds1/ds1_Odometry.dat'
     ground_truth_file = 'datasets/ds1/ds1_Groundtruth.dat'
 
@@ -94,7 +93,6 @@ def main():
     plt.legend()
     plt.show()
 
-if __name__ == "__main__": 
-    main() 
 
+    
 

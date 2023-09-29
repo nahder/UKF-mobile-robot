@@ -18,7 +18,6 @@ def get_landmark_data():
 
 
 #input: current position
-#output: distances to all landmarks
 def measurement_model(cur_pose,subject_number,landmark_data): 
 
     x,y,theta = cur_pose 
@@ -32,17 +31,10 @@ def measurement_model(cur_pose,subject_number,landmark_data):
     return r,bearing 
 
 
-
-    
-    
-
-
-
-
 def distance(p1,p2): 
     return np.linalg.norm(np.array(p1)-np.array(p2))
 
-def main(): 
+def test_measurement_model(): 
    ldata = get_landmark_data()
    measurement_model((1,1,1),6,ldata)
    sample_run = {6:(2,3,0), 13:(0,3,0), 17:(1,-2,0)} 
@@ -52,10 +44,6 @@ def main():
         print(r,bearing)
 
 
-    
-
-   
 
 
-if __name__ == "__main__": 
-    main() 
+
