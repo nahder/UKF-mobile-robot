@@ -36,12 +36,14 @@ def distance(p1,p2):
 
 def test_measurement_model(): 
    ldata = get_landmark_data()
-   measurement_model((1,1,1),6,ldata)
    sample_run = {6:(2,3,0), 13:(0,3,0), 17:(1,-2,0)} 
 
    for sample in sample_run.items():
         r,bearing = measurement_model(sample[1],sample[0],ldata) 
-        print(r,bearing)
+        print("robot pos:" ,sample[1], "distance: ",np.round(r,3),"meters",
+               "bearing: ",np.round(bearing,3),"radians" )
+
+      
 
 
 
