@@ -1,6 +1,8 @@
 from motion_model import * 
 import numpy as np
+import matplotlib.pyplot as plt
 
+#read .dat file and returns a np array containing all the columns
 def read_dat_file(file_path):
     data = []
     with open(file_path, 'r') as file:
@@ -15,6 +17,7 @@ def read_dat_file(file_path):
     return np.array(data)  
 
 
+#testing motion model predictions for a sequence of control commands
 def test_sequence():
     x_prev = (0.0, 0.0, 0.0)
     x_positions = []
@@ -51,10 +54,11 @@ def test_sequence():
     plt.plot(x_positions, y_positions, marker='o', linestyle='-')
     plt.xlabel('X Position (m)')
     plt.ylabel('Y Position (m)')
-    plt.title('Robot Trajectory')
+    plt.title('Robot Trajectory, Sample Commands')
     plt.grid(True)
     plt.show()
 
+#plots comparison between ground truth trajectory and motion model prediction given all commands
 def compare_ground_truth():
     command_file = 'datasets/ds1/ds1_Odometry.dat'
     ground_truth_file = 'datasets/ds1/ds1_Groundtruth.dat'
@@ -81,15 +85,16 @@ def compare_ground_truth():
         y_positions.append(y)
 
         x_prev = (x, y, theta)  
+        
+    plt.plot(x_positions, y_positions,label='Dead Reckoning Trajectory')
 
     plt.plot(ground_truth_x, ground_truth_y,label='Ground Truth Trajectory') 
-    plt.plot(x_positions, y_positions,label='Motion Model Trajectory')
 
     plt.xlabel('X Position (m)')
     plt.ylabel('Y Position (m)')
     plt.gca().set_aspect('equal')
 
-    plt.title('Trajectory Comparison: Motion Model vs Ground Truth')
+    plt.title('Trajectory Comparison: Dead Reckoning vs Ground Truth')
     plt.legend()
     plt.show()
 
