@@ -1,6 +1,4 @@
 """
-Nader Ahmed
-Northwestern University, CS469
 
 The motion model uses the translational and rotational velocity commands and performs 
 dead-reckoning. Its performance is then drawn on a plot alongside the ground truth positions
