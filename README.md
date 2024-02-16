@@ -5,12 +5,12 @@ Execute `python run.py` to see a plot of the robot's trajectory plotted alongsid
 #### Motion Model
 If there is only a translational speed, 𝑣, or if the rotational speed, 𝑤, is sufficiently small, the robot will move straight in the direction of its current heading. This position can be determined by:
 <p align="center">
-    <img src="models/motion1.png" alt="Motion Model" width="200"/>
+    <img src="models/motion1.png" alt="Motion Model" width="300"/>
 </p>
 
 If there is both a translational and rotational speed the robot will instead move in a curved path. The radius of curvature can be determined by 𝑅 = 𝑣/𝑤, and new positions can be given by:
 <p align="center">
-    <img src="models/motion2.png" alt="Motion Model" width="350"/>
+    <img src="models/motion2.png" alt="Motion Model" width="450"/>
 </p>
 
 The model is nonlinear; this can clearly be seen by how trigonometric functions are used to relate the inputs 𝑣, 𝑤 to the outputs 𝑥_𝑛𝑒𝑤 , 𝑦_𝑛𝑒𝑤, θ_𝑛𝑒𝑤. This nonlinearity is incompatible with filtering methods that
@@ -23,6 +23,6 @@ UKF is more computationally expensive than the EKF given its propagation of sigm
 and calculates the distance between it and the robot. It then calculates the relative bearing, or the angle between the robot’s orientation and the direction to that landmark.
 A right triangle can be drawn with the hypotenuse being the distance from the robot to the landmark. Thus, it naturally follows that the distance and relative bearing be calculated as:
 <p align="center">
-    <img src="models/measurement.png" alt="Motion Model" width="120"/>
+    <img src="models/measurement.png" alt="Motion Model" width="150"/>
 </p>
 
